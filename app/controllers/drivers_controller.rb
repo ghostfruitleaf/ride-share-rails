@@ -11,6 +11,9 @@ class DriversController < ApplicationController
     if @driver.nil?
       head :not_found
       return
+    else
+      @trips = @driver.trips
+      @trips = @trips.all
     end
   end
 
