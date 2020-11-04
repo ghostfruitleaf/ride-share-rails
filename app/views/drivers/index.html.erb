@@ -1,12 +1,27 @@
-<%#index.html.erb%>
-
-<h1>Driver List</h1>
-<ul>
-  <% @drivers.each do |driver|  %>
-    <li>
-      <%= link_to driver.name, driver_path(driver) %>
-      Vin: <%= driver.vin %> <%= link_to "Edit Driver", edit_driver_path(driver) %> <%= link_to "Delete Driver", driver_path(driver), method: :delete, data: {confirm: "Are you sure?"}%>
-    </li>
-  <% end %>
-</ul>
-<%= link_to "Add Driver", new_driver_path %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Passengers</title>
+</head>
+<body>
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <li>Riders</li>
+      <%= link_to content_tag(:li,"Drivers"), drivers_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h2>All Drivers</h2>
+  <%= link_to content_tag(:h3,"Add new driver"), new_driver_path, method: :get %>
+  <ul class = "drivers">
+    <% @drivers.each do |driver|  %>
+      <%= link_to content_tag(:li, driver[:name]), driver_path(driver.id), method: :get %>
+    <% end %>
+  </ul>
+</main>
+</body>
+</html>

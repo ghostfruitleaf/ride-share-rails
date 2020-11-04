@@ -1,9 +1,45 @@
-<div>
-  <h1><%= @driver.name %></h1>
-  <h2>Vin: <%= @driver.vin %></h2>
-  <%= link_to "Edit", edit_driver_path(@driver) %>
-  <%= link_to "Delete", driver_path(@driver), method: :delete, data: {confirm: "Are you sure?"}%>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%=@driver.name%></title>
+</head>
+<body>
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <li>Riders</li>
+      <%= link_to content_tag(:li,"Drivers"), passengers_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h2><b>Driver:</b> <%=@driver.name%></h2>
+  <h3><b>Vin:</b> <%=@driver.vin%></h3>
+  <nav>
+    <ul>
+      <%= link_to content_tag(:li, "Edit Info"), edit_driver_path(@driver.id), method: :get %>
+      <%= link_to content_tag(:li, "Delete"), driver_path(@driver.id), method: :delete, data: {confirm: "Are you sure you want to delete this driver info?"}%>
+    </ul>
+  </nav>
 
+  <br/>
+  <h3>Request Trip</h3>
+  <br/>
+  <h3>Trips</h3>
+  <table class = "trips">
+    <tr>
+      <th>Trip ID</th>
+      <th>Driver</th>
+      <th>Passenger</th>
+      <th>Cost</th>
+      <th>Rating</th>
+    </tr>
+  </table>
 
-<p><%= link_to "Return to Driver List", drivers_path %></p>
+  <ul class = "trip-info">
+  </ul>
+</main>
+</body>
+</html>
