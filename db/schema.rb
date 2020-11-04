@@ -10,16 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2020_11_03_030428) do
-=======
-ActiveRecord::Schema.define(version: 0) do
->>>>>>> 31b7ce3ead31557bda63ca9118e88fc1b29129c0
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-<<<<<<< HEAD
   create_table "drivers", force: :cascade do |t|
     t.string "name"
     t.string "vin"
@@ -45,6 +40,4 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-=======
->>>>>>> 31b7ce3ead31557bda63ca9118e88fc1b29129c0
 end
