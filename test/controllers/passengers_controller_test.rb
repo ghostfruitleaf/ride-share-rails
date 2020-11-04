@@ -4,12 +4,11 @@ describe PassengersController do
   describe "index" do
     it "responds with success when there are many passengers saved" do
       # Arrange
-      # Ensure that there is at least one Driver saved
-
+      Passenger.create name: "test passenger", phone_num: "1234567890"
       # Act
-
+      get passengers_path
       # Assert
-
+      must_respond_with :success
     end
 
     it "responds with success when there are no passengers saved" do
@@ -17,9 +16,9 @@ describe PassengersController do
       # Ensure that there are zero drivers saved
 
       # Act
-
+      get passengers_path
       # Assert
-
+      must_respond_with :success
     end
   end
 
@@ -64,7 +63,7 @@ describe PassengersController do
 
     end
 
-    it "does not create a passenger if the form data violates Passenger validations, and responds with a redirect" do
+    it "does not create a passenger if the form data violates Passenger validations, and responds with a redirect to the form page" do
       # Note: This will not pass until ActiveRecord Validations lesson
       # Arrange
       # Set up the form data so that it violates Driver validations

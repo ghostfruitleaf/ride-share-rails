@@ -9,16 +9,17 @@
   <nav>
     <ul>
       <li>Home</li>
-      <%= link_to content_tag(:li,"Riders"), "/passengers", method: :get %>
+      <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
       <li>Drivers</li>
     </ul>
   </nav>
 </header>
 <main>
   <h2>All Passengers</h2>
+  <%= link_to content_tag(:h3,"Add new rider"), new_passenger_path, method: :get %>
   <ul class = "passengers">
     <% @passengers.each do |passenger|  %>
-      <li><%=passenger[:name]%></li>
+      <%= link_to content_tag(:li, passenger[:name]), passenger_path(passenger.id), method: :get %>
     <% end %>
   </ul>
 </main>
