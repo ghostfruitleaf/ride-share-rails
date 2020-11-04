@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Passengers</title>
+</head>
+<body>
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
+      <li>Drivers</li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h2>All Passengers</h2>
+  <%= link_to content_tag(:h3,"Add new rider"), new_passenger_path, method: :get %>
+  <ul class = "passengers">
+    <% @passengers.each do |passenger|  %>
+      <%= link_to content_tag(:li, passenger[:name]), passenger_path(passenger.id), method: :get %>
+    <% end %>
+  </ul>
+</main>
+</body>
+</html>
