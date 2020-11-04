@@ -18,6 +18,7 @@
   <h2><b>Passenger:</b> <%=@passenger.name%></h2>
   <h3><b>Phone:</b> <%=@passenger.phone_num%></h3>
   <nav>
+    <p><%=@trips.first.id %></p>
     <ul>
       <%= link_to content_tag(:li, "Edit Info"), edit_passenger_path(@passenger.id), method: :get %>
       <%= link_to content_tag(:li, "Delete"), passenger_path(@passenger.id), method: :delete, data: {confirm: "Are you sure you want to delete this passenger info?"}%>

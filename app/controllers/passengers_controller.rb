@@ -9,6 +9,9 @@ class PassengersController < ApplicationController
     if @passenger.nil?
       head :not_found
       return
+    else
+      @trips = @passenger.trips
+      @trips = @trips.all
     end
   end
 
