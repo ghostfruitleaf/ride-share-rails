@@ -1,0 +1,9 @@
+<div>
+  <h1><%= @driver.name %></h1>
+  <h2>Vin: <%= @driver.vin %></h2>
+  <%= link_to "Edit", edit_driver_path(@driver) %>
+  <%= link_to "Delete", driver_path(@driver), method: :delete, data: {confirm: "Are you sure?"}%>
+</div>
+
+
+<p><%= link_to "Return to Driver List", drivers_path %></p>

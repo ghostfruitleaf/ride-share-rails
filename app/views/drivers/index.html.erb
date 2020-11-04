@@ -1,0 +1,12 @@
+<%#index.html.erb%>
+
+<h1>Driver List</h1>
+<ul>
+  <% @drivers.each do |driver|  %>
+    <li>
+      <%= link_to driver.name, driver_path(driver) %>
+      Vin: <%= driver.vin %> <%= link_to "Edit Driver", edit_driver_path(driver) %> <%= link_to "Delete Driver", driver_path(driver), method: :delete, data: {confirm: "Are you sure?"}%>
+    </li>
+  <% end %>
+</ul>
+<%= link_to "Add Driver", new_driver_path %>
