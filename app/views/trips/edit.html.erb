@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Trip <%=@trip.id %></title>
+</head>
+<body>
+<header>
+  <h1>Ada Rideshare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <%= link_to content_tag(:li, "Riders"), passengers_path, method: :get %>
+      <%= link_to content_tag(:li, "Drivers"), drivers_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<main id = "form">
+  <h2>Edit Trip <%=@trip.id %></h2>
+  <h3>Fill out the below:</h3>
+  <%= render partial: "form", locals: { action_name: "Edit" } %>
+</main>
+</body>
+</html>

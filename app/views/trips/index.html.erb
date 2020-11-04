@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trips</title>
+</head>
+<body>
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
+      <%= link_to content_tag(:li, "Drivers"), drivers_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h2>Super Secret Trips Database for Debugging</h2>
+  <table class = "trips">
+    <tr>
+      <th>Trip ID</th>
+      <th>Date</th>
+      <th>Driver</th>
+      <th>Passenger</th>
+      <th>Cost</th>
+      <th>Rating</th>
+      <th>View Trip</th>
+    </tr>
+    <% @trips.each do |trip| %>
+      <tr>
+        <td><%=trip.id%></td>
+        <td><%=trip.date%></td>
+        <td><%=trip.driver.name%> <%= link_to content_tag(:p, "View"), driver_path(trip.driver.id), method: :get %></td>
+        <td><%=trip.passenger.name%> <%= link_to content_tag(:p, "View"), passenger_path(trip.passenger.id), method: :get %></td>
+        <td>$<%='%.2f' % (trip.cost/100)%></td>
+        <td><%=trip.rating %></td>
+        <td><%= link_to content_tag(:p, "View"), trip_path(trip.id), method: :get %></td>
+      </tr>
+    <% end %>
+  </table>
+</main>
+</body>
+</html>
