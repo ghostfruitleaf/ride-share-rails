@@ -11,11 +11,11 @@
 <%= form_with model: @trip, class: 'create-trip' do |f| %>
   <ul>
     <li>
-      <h3><%= f.label :driver_id %></h3>
+      <h3><%= f.label :driver_id %> (By ID)</h3>
       <%= f.text_field :driver_id %>
     </li>
     <li>
-      <h3><%= f.label :passenger_id %></h3>
+      <h3><%= f.label :passenger_id %> (By ID)</h3>
       <%= f.text_field :passenger_id %>
     </li>
   </ul>
