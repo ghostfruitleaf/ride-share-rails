@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Passengers</title>
+</head>
+<body>
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <%= link_to content_tag(:li,"Riders"), "/passengers", method: :get %>
+      <li>Drivers</li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h2>All Passengers</h2>
+  <ul class = "passengers">
+    <% @passengers.each do |passenger|  %>
+      <li><%=passenger[:name]%></li>
+    <% end %>
+  </ul>
+</main>
+</body>
+</html>
