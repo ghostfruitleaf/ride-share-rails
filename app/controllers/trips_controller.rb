@@ -21,7 +21,11 @@ class TripsController < ApplicationController
     end
 
     if @trip.save
-      redirect_to trip_path(@trip.id)
+      if params[:passenger_id]
+        redirect_to passenger_trip_path(id: @trip.id)
+      else
+        redirect_to trip_path(@trip.id)
+      end
       return
     else
       render :new
@@ -62,8 +66,15 @@ class TripsController < ApplicationController
     @trip = Trip.find_by(id: trip_id)
     # NOTE: confirmation page is handled by index and show pages as a dialog box.
     if @trip
-      @trip.destroy
-      redirect_to trips_path
+      if params[:passenger_id]
+        @trip.destroy
+        redirect_to passenger_path(params[:passenger_id])
+      elsif params[:driver_id]
+        @trip.destroy
+        redirect_to driver_path(params[:driver_id])
+      else
+        redirect_to trips_path
+      end
     else
       head :not_found
       return
