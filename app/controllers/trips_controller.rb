@@ -13,12 +13,13 @@ class TripsController < ApplicationController
   end
 
   # CREATE
-  def new
-    @trip = Passenger.new
-  end
-
   def create
-    @trip = Trip.new(trip_params)
+    if params[:passenger_id]
+      passenger = Passenger.find_by(id: params[:passenger_id])
+      @trip = passenger.trips.new
+      @trip.default
+    end
+
     if @trip.save
       redirect_to trip_path(@trip.id)
       return
@@ -38,8 +39,8 @@ class TripsController < ApplicationController
   end
 
   def update
-    passenger_id = params[:id]
-    @passenger = Passenger.find_by(id: passenger_id)
+    trip_id = params[:id]
+    @trip = Trip.find_by(id: trip_id)
 
     if @trip.nil?
       redirect_to trips_path
@@ -69,9 +70,13 @@ class TripsController < ApplicationController
     end
   end
 
+  def rate_trip
+
+  end
+
   private
 
   def trip_params
-    return params.require(:trip).permit(:driver_id,:passenger_id,:date,:rating,:cost)
+    return params.require(:trip).permit(:driver_id, :passenger_id, :date, :rating, :cost)
   end
 end

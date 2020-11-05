@@ -18,7 +18,7 @@
   <nav>
     <ul>
       <%= link_to content_tag(:li, "Edit Info"), edit_trip_path(@trip.id), method: :get %>
-      <%= link_to content_tag(:li, "Delete"), trip_path(@trip.id), method: :delete, data: {confirm: "Are you sure you want to delete this passenger info?"}%>
+      <%= link_to content_tag(:li, "Delete"), trip_path(@trip.id), method: :delete, data: {confirm: "Are you sure you want to delete this trip?"}%>
     </ul>
   </nav>
   <h2>Trip <%=@trip.id%></h2>
@@ -37,8 +37,12 @@
       <td><%=@trip.date%></td>
       <td><%=@trip.driver.name%> <%= link_to content_tag(:p, "View"), driver_path(@trip.driver.id), method: :get %></td>
       <td><%=@trip.passenger.name%> <%= link_to content_tag(:p, "View"), passenger_path(@trip.passenger.id), method: :get %></td>
-      <td>$<%='%.2f' % (@trip.cost/100)%></td>
-      <td><%=@trip.rating %></td>
+      <td><%= '$%.2f' % (@trip.cost/100)%></td>
+      <td><%if @trip.rating.nil?%>
+          Pending <p>Rate</p>
+        <% else%>
+          <%=@trip.rating%>
+        <% end%></td>
       <td><%= link_to content_tag(:p, "View"), trip_path(@trip.id), method: :get %></td>
     </tr>
   </table>
