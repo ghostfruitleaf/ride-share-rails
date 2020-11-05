@@ -16,7 +16,7 @@ class Trip < ApplicationRecord
     driver = Driver.find_by(name: "TEST DRIVER")
     driver.available = false
     self[:driver_id] = driver.id
-    self[:date] = Time.now.strftime("%d/%m/%Y").to_s
+    self[:date] = Date.now.to_formatted_s(:db)
     self[:rating] = nil
     self[:cost] = rand(0...5000.00)
   end

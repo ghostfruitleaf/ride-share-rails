@@ -52,7 +52,7 @@
         <% else%>
           <%=trip.rating%>
         <% end%></td>
-      <td><%= link_to content_tag(:p, "View"), trip_path(trip.id), method: :get %></td>
+      <td><%= link_to content_tag(:p, "View"), passenger_trip_path(trip.id), method: :get %></td>
     </tr>
     <% end %>
   </table>
