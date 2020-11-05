@@ -25,14 +25,15 @@ describe TripsController do
   describe "show" do
     # Arrange
     before do
-      Trip.create(date: Date.today, rating: 5, cost: 3.21)
+      @trip = Trip.create(date: "mm-dd-yy", rating: 5, cost: 3.21)
     end
     it "responds with success when showing an existing valid trip" do
-      # Arrange
-      id = Trip.find_by(date:"test")[:id]
+      # # Arrange
 
+      id = @trip.id
       # Act
-      get trip_path(id)
+
+      get trips_path(@trip.id)
 
       # Assert
       must_respond_with :success
@@ -47,25 +48,21 @@ describe TripsController do
     end
   end
 
-  describe "new" do
-    it "responds with success" do
-      # Act
-      get new_trip_path
-
-      # Assert
-      must_respond_with :success
-    end
-  end
 
   describe "create" do
+
     it "can create a new trip with valid information accurately, and redirect" do
       # Arrange
+      passenger = Passenger.new(name: 'hi', phone_num: 'num')
+      driver = Driver.new(name: "asjdif", vin: "aajsdofss")
       trip_hash = {
           trip: {
+              passenger_id: passenger.id,
+              driver_id: driver.id,
               date: "10-11-20",
               rating: 3,
               cost: 2.56
-          },
+        }
       }
 
       # Act-Assert
@@ -73,12 +70,15 @@ describe TripsController do
         post trips_path, params: trip_hash
       }.must_change "Trip.count", 1
 
-      # Assert
-      new_trip = Trip.find_by(date: trip_hash[:trip][:date])
-      expect(new_trip.date).must_equal trip_hash[:trip][:date]
+      # # Assert
+      new_trip = Trip.find_by(passenger_id: trip_hash[:trip][:passenger_id])
+
+      expect(new_trip.rating).must_equal trip_hash[:trip][:rating]
+      expect(new_trip.cost).must_equal trip_hash[:trip][:cost]
 
       must_respond_with :redirect
       must_redirect_to trip_path(new_trip.id)
+
 
     end
 
@@ -103,9 +103,10 @@ describe TripsController do
     it "responds with success when getting the edit page for an existing, valid trip" do
       # Arrange
       id = Trip.find_by(date:"mm-dd-yy")[:id]
-
+      # id = @trip.id
       # Act
       get edit_trip_path(id)
+      # (id)
       # Assert
       must_respond_with :success
     end
@@ -124,7 +125,7 @@ describe TripsController do
     end
     let (:edit_trip_data) {
       {
-          passenger: {date: "EDITED",
+          trip: {date: "EDITED",
                       rating:0,
                       cost: 0.00}
       }
@@ -134,7 +135,7 @@ describe TripsController do
       id = Trip.find_by(date:"mm-dd-yy")[:id]
       # Act-Assert
       expect{
-        patch trip_path(id), params: edit_trip_data
+        patch trip_id(id), params: edit_trip_data
       }.wont_change "Trip.count"
 
       must_redirect_to trip_path(id)
@@ -178,20 +179,18 @@ describe TripsController do
   describe "destroy" do
     it "destroys the trip instance in db when trip exists, then redirects" do
       # Arrange
-      delete_me = Trip.new date: "Delete me", rating: 0, cost: 0.00
-
-      delete_me.save
-      id = delete_me.id
+      trip = Trip.create(date: "mm-dd-yy", rating: 0)
+      id = trip.id
 
       # Act
       expect {
         delete trip_path(id)
+      }.must_change "Trip.count", -1
 
-        # Assert
-      }.must_change 'Trip.count', -1
+      deleted_trip = Trip.find_by(date: "mm-dd-yy")
 
-      assert_nil(Trip.find_by(date: delete_me.date))
-
+      # Assert
+      expect(deleted_trip).must_be_nil
       must_respond_with :redirect
       must_redirect_to trips_path
 
