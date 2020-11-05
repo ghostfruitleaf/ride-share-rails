@@ -82,7 +82,31 @@ class TripsController < ApplicationController
   end
 
   def rate_trip
+    trip_id = params[:id]
+    @trip = Trip.find_by(id: trip_id)
 
+    if @trip.nil?
+      redirect_to trips_path
+      return
+    end
+  end
+
+  def get_rating
+    trip_id = params[:id]
+    @trip = Trip.find_by(id: trip_id)
+
+    if @trip.nil?
+      redirect_to trips_path
+      return
+    end
+
+    if @trip.update(trip_params)
+      redirect_to trip_path(@trip.id)
+      return
+    else
+      render :rate_trip
+      return
+    end
   end
 
   private

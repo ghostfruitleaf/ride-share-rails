@@ -7,5 +7,8 @@ Rails.application.routes.draw do
   resources :passengers do
     resources :trips, only: [:show, :create, :destroy]
   end
-  resources :trips, only: [:index, :show, :create, :edit, :destroy]
+  resources :trips, only: [:index, :show, :create, :edit, :destroy, :update]
+
+  get '/trips/:id/rate_trip', to: 'trips#rate_trip', as: "rate_trip"
+  patch 'trips/:id', to: 'trips#get_rating_trip', as: "get_rating_trip"
 end

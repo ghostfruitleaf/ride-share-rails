@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rate Trip <%=@trip.id %></title>
+</head>
+<body>
+<header>
+  <h1>Ada Rideshare</h1>
+  <nav>
+    <ul>
+      <li>Home</li>
+      <%= link_to content_tag(:li, "Riders"), passengers_path, method: :get %>
+      <%= link_to content_tag(:li, "Drivers"), drivers_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<main id = "form">
+  <h2>Rate Trip <%=@trip.id %></h2>
+  <%= form_with model: @trip, class: 'create-trip' do |f| %>
+
+    <%= f.radio_button :rating, 1 %>
+    <%= f.label "1 (Terrible)"%>
+    <br/>
+    <%= f.radio_button :rating, 2 %>
+    <%= f.label "2 (Could be worse)"%>
+    <br/>
+    <%= f.radio_button :rating, 3 %>
+    <%= f.label "3 (Okay)"%>
+    <br/>
+    <%= f.radio_button :rating, 4%>
+    <%= f.label "4 (Pretty great)"%>
+    <br/>
+    <%= f.radio_button :rating, 5 %>
+    <%= f.label "5 (Amazing!!!)"%>
+    <br/>
+  <%= f.submit "Save", class: "save-trip" %>
+  <% end %>
+</main>
+</body>
+</html>

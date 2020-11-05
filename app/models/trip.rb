@@ -3,6 +3,7 @@ class Trip < ApplicationRecord
   belongs_to :passenger
 
   validates_associated :driver, :passenger
+  validate :valid_date
 
   validates :driver_id, presence: true
   validates :passenger_id, presence: true
@@ -11,13 +12,22 @@ class Trip < ApplicationRecord
                      numericality: { only_integer: true,
                                      greater_than_or_equal_to: 1,
                                      less_than_or_equal_to: 5}
-  validates :cost, numericality: true
+  validates :cost, numericality: { greater_than_or_equal_to: 0 }
+
   def default
     driver = Driver.find_by(name: "TEST DRIVER")
     driver.available = false
     self[:driver_id] = driver.id
-    self[:date] = Date.now.to_formatted_s(:db)
+    self[:date] = Date.today.to_formatted_s(:db)
     self[:rating] = nil
     self[:cost] = rand(0...5000.00)
+  end
+
+  def valid_date
+    begin
+      Date.parse(self[:date]).to_formatted_s(:db)
+    rescue
+      self.errors[:date] << 'must be valid date.'
+    end
   end
 end

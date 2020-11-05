@@ -45,7 +45,7 @@
       <td><%=@trip.passenger.name%> <%= link_to content_tag(:p, "View"), passenger_path(@trip.passenger.id), method: :get %></td>
       <td><%= '$%.2f' % (@trip.cost/100)%></td>
       <td><%if @trip.rating.nil?%>
-          Pending <p>Rate</p>
+          Pending <%= link_to content_tag(:p, "Rate"), rate_trip_path(id: @trip.id), method: :get %>
         <% else%>
           <%=@trip.rating%>
         <% end%></td>
