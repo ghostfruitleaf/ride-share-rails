@@ -14,8 +14,8 @@ class TripsController < ApplicationController
 
   # CREATE
   def create
-    if params[:passenger_id]
-      passenger = Passenger.find_by(id: params[:passenger_id])
+    if params[:trip][:passenger_id]
+      passenger = Passenger.find_by(id: params[:trip][:passenger_id])
       @trip = passenger.trips.new
       @trip.default
     end
@@ -55,7 +55,7 @@ class TripsController < ApplicationController
       redirect_to trip_path(@trip.id)
       return
     else
-      render :edit
+      render :edit, status: :bad_request
       return
     end
   end
@@ -66,11 +66,10 @@ class TripsController < ApplicationController
     @trip = Trip.find_by(id: trip_id)
     # NOTE: confirmation page is handled by index and show pages as a dialog box.
     if @trip
+      @trip.destroy
       if params[:passenger_id]
-        @trip.destroy
         redirect_to passenger_path(params[:passenger_id])
       elsif params[:driver_id]
-        @trip.destroy
         redirect_to driver_path(params[:driver_id])
       else
         redirect_to trips_path

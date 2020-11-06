@@ -15,7 +15,7 @@ class Trip < ApplicationRecord
   validates :cost, numericality: { greater_than_or_equal_to: 0 }
 
   def default
-    driver = Driver.find_by(name: "TEST DRIVER")
+    driver = Driver.where(available: true).first
     driver.available = false
     self.driver_id = driver.id
     self.date = Date.today.to_formatted_s(:db)
