@@ -70,8 +70,8 @@ describe TripsController do
       new_trip = Trip.find_by(passenger_id: trip_hash[:trip][:passenger_id])
 
       expect(new_trip.rating).must_be_nil
-      expect(new_trip.cost>=1.65).must_equal true
-      expect(new_trip.cost<5000.00).must_equal true
+      expect(new_trip.cost>=0.00).must_equal true
+      expect(new_trip.cost<50.00).must_equal true
 
       must_respond_with :redirect
       must_redirect_to trip_path(new_trip.id)
@@ -163,10 +163,19 @@ describe TripsController do
       id = Trip.find_by(date: Date.today)[:id]
       trip = Trip.find_by(id: id)
       empty_trip = {trip: {date:nil, rating:nil, cost:nil}}
-
+      bad_trip1 = {trip:{passenger_id: -1, driver_id: -1, date: "blah", rating: 0, cost: -1}}
+      bad_trip2 = {trip:{passenger_id: -1, driver_id: -1, date: "blah", rating: 6, cost: -1}}
       # Act-Assert
       expect {
         patch trip_path(id), params: empty_trip
+      }.wont_change "Trip.count"
+
+      expect {
+        patch trip_path(id), params: bad_trip1
+      }.wont_change "Trip.count"
+
+      expect {
+        patch trip_path(id), params: bad_trip2
       }.wont_change "Trip.count"
 
       # success indicates rendering of page
