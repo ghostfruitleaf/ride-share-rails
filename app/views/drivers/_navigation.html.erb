@@ -1,0 +1,11 @@
+<header>
+  <h1>Ada RideShare</h1>
+  <nav>
+    <ul>
+      <%= link_to content_tag(:li,"Home"), root_path, method: :get %>
+      <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
+      <%= link_to content_tag(:li,"Drivers"), drivers_path, method: :get %>
+      <%= link_to content_tag(:li,"Trips"), trips_path, method: :get %>
+    </ul>
+  </nav>
+</header>

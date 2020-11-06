@@ -16,3 +16,27 @@
 @import "bootstrap";
 
 @import "**/*";
+
+header{
+    background-color: #4A6FA5;
+    color: #DBE9EE;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+header ul{
+    padding: 0;
+}
+
+header > nav ul li{
+    list-style-type: none;
+}
+
+header a{
+    color: #DBE9EE;
+}
+
+header a:hover{
+    color: #4F6D7A;
+}

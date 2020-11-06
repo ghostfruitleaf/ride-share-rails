@@ -4,16 +4,7 @@
   <title><%=@driver.name%></title>
 </head>
 <body>
-<header>
-  <h1>Ada RideShare</h1>
-  <nav>
-    <ul>
-      <li>Home</li>
-      <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
-      <%= link_to content_tag(:li,"Drivers"), passengers_path, method: :get %>
-    </ul>
-  </nav>
-</header>
+<%= render partial: "navigation"%>
 <main>
   <h2><b>Driver:</b> <%=@driver.name%></h2>
   <h3><b>Vin:</b> <%=@driver.vin%></h3>
