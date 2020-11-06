@@ -56,26 +56,77 @@ describe Driver do
       expect(new_driver.errors.messages).must_include :vin
       expect(new_driver.errors.messages[:vin]).must_equal ["can't be blank"]
     end
+
+    it "must have a boolean for available" do
+      # Arrange
+      new_driver.available = nil
+
+      # Assert
+      expect(new_driver.valid?).must_equal false
+      expect(new_driver.errors.messages).must_include :available
+      expect(new_driver.errors.messages[:available]).must_equal ["must be true or false"]
+    end
   end
 
   # Tests for methods you create should go here
   describe "custom methods" do
     describe "average rating" do
-      # Your code here
+      it "returns 0 for drivers with no trips" do
+        expect(new_driver.average_rating).must_be_close_to 0
+      end
+      it "correctly calculates average for driver's trips" do
+        new_driver.save
+        new_passenger = Passenger.create(name: "Kari", phone_num: "111-111-1211")
+        trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 1234)
+        trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 4, cost: 6334)
+        expect(new_driver.average_rating).must_be_close_to 4.5
+      end
+      it "correctly ignores trips with no rating" do
+        new_driver.save
+        new_passenger = Passenger.create(name: "Kari", phone_num: "111-111-1211")
+        trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 1234)
+        trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 4, cost: 6334)
+        trip_3 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: nil, cost: 6334)
+        expect(new_driver.average_rating).must_be_close_to 4.5
+      end
     end
 
     describe "total earnings" do
-      # Your code here
+      it "returns 0 for drivers with no trips" do
+        expect(new_driver.total_earnings).must_be_close_to 0
+      end
+      it "returns the sum of all driver's earnings accounting for 80% cut and 1.65 fee" do
+        new_driver.save
+        new_passenger = Passenger.create(name: "Kari", phone_num: "111-111-1211")
+        trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 10.00)
+        trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 3, cost: 10.00)
+
+        expect(new_driver.total_earnings).must_be_close_to 12.70
+      end
+      it "does not deduct 1.65 from trips costing less than 1.65" do
+        new_driver.save
+        new_passenger = Passenger.create(name: "Kari", phone_num: "111-111-1211")
+        trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 10.00)
+        trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 3, cost: 1.00)
+
+        expect(new_driver.total_earnings).must_be_close_to 7.15
+      end
     end
 
     describe "can go online" do
-      # Your code here
+      it "marks available as true" do
+        new_driver.offline
+        new_driver.online
+        expect(new_driver.available).must_equal true
+      end
     end
 
     describe "can go offline" do
-      # Your code here
+      it "marks available as false" do
+        new_driver.online
+        new_driver.offline
+        expect(new_driver.available).must_equal false
+      end
     end
-
-    # You may have additional methods to test
   end
 end

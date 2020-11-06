@@ -7,9 +7,9 @@ describe DriversController do
     it "responds with success when there are many drivers saved" do
       # Arrange
       # Ensure that there is at least one Driver saved
-      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT")
-      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M")
-      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU")
+      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT", available: true)
+      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M", available: true)
+      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU", available: true)
 
       # Act
       get drivers_path
@@ -30,9 +30,9 @@ describe DriversController do
 
   describe "show" do
     before do
-      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT")
-      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M")
-      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU")
+      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT", available: true)
+      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M", available: true)
+      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU", available: true)
 
     end
 
@@ -87,7 +87,7 @@ describe DriversController do
       new_driver = Driver.find_by(name: driver_hash[:driver][:name])
 
       expect(new_driver.vin).must_equal driver_hash[:driver][:vin]
-      expect(new_driver.available).must_equal nil
+      expect(new_driver.available).must_equal true
 
       must_respond_with :redirect
       must_redirect_to driver_path(new_driver.id)
@@ -115,9 +115,9 @@ describe DriversController do
   
   describe "edit" do
     before do
-      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT")
-      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M")
-      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU")
+      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT", available: true)
+      @driver_2 = Driver.create(name: "Pauline Chane", vin: "W092FDPH6FNNK102M", available: true)
+      @driver_3 = Driver.create(name: "John Smith", vin: "J811TNPS4FYZF4VGU", available: true)
     end
     it "responds with success when getting the edit page for an existing, valid driver" do
 
@@ -140,12 +140,13 @@ describe DriversController do
 
   describe "update" do
     before do
-      Driver.create(name: "Driver Test", vin: "1C9511EE4YR35640C" )
+      Driver.create(name: "Driver Test", vin: "1C9511EE4YR35640C" , available: true)
     end
     let (:new_driver_hash) {
       {driver:
            {name: "Mary Jane",
-            vin: "RF4NN09F9JH8738HF"}
+            vin: "RF4NN09F9JH8738HF",
+            available: false}
       }
     }
     it "can update an existing driver with valid information accurately, and redirect" do
@@ -170,7 +171,7 @@ describe DriversController do
       updated_driver = Driver.find_by(id: id)
       expect(updated_driver.name).must_equal new_driver_hash[:driver][:name]
       expect(updated_driver.vin).must_equal new_driver_hash[:driver][:vin]
-      expect(updated_driver.available).must_equal nil
+      expect(updated_driver.available).must_equal false
 
     end
 
@@ -209,7 +210,7 @@ describe DriversController do
   describe "destroy" do
     it "destroys the driver instance in db when driver exists, then redirects" do
       # Arrange
-      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M")
+      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M", available: true)
       id = driver.id
 
       # Act
@@ -226,6 +227,28 @@ describe DriversController do
 
     end
 
+    it "deletes any trips associated with a deleted driver" do
+      # Arrange
+      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M", available: true)
+      driver.save
+      passenger = Passenger.create(name: "Shiba", phone_num: "000 000 0000")
+      trip = Trip.create(driver_id: driver.id, passenger_id: passenger.id, date: Date.today, rating: 5, cost: 10.00)
+      id = driver.id
+      trip_id = trip.id
+      # Act
+      expect {
+        delete driver_path(id)
+      }.must_change "Driver.count", -1
+
+      deleted_driver = Driver.find_by(name: "Marta Mora")
+
+      # Assert
+      expect(deleted_driver).must_be_nil
+      must_respond_with :redirect
+      must_redirect_to drivers_path
+      expect(Trip.find_by(id:trip_id)).must_be_nil
+    end
+
     it "does not change the db when the driver does not exist, then responds with " do
       # Arrange
       # Ensure there is an invalid id that points to no driver
@@ -238,6 +261,50 @@ describe DriversController do
       # Assert
       must_respond_with :not_found
 
+    end
+  end
+
+  describe "toggle_online" do
+    # Arrange
+    before do
+      @driver_1 = Driver.create(name: "Juan Lopez", vin: "TAMX2B609RPZY1XHT", available: true)
+    end
+    # Note:  If there was a way to fail to save the changes to a task, that would be a great
+    #        thing to test - used validation and added a test for "create" as well!
+    it "can toggle a driver between on and offline" do
+      # Arrange
+      id = @driver_1.id
+      # Act-Assert
+      # incomplete -> incomplete
+      expect{
+        patch toggle_online_driver_path(id)
+      }.wont_change "Driver.count"
+
+      must_redirect_to driver_path(id)
+
+      toggled_driver = Driver.find_by(id: id)
+      expect(toggled_driver.available).must_equal false
+
+
+      expect{
+        patch toggle_online_driver_path(id)
+      }.wont_change "Driver.count"
+
+      must_redirect_to :driver
+
+      toggled_driver = Driver.find_by(id: id)
+      expect(toggled_driver.available).must_equal true
+
+    end
+
+    it "will redirect to the drivers page if given an invalid id" do
+      id = -1
+      # Act-Assert
+      expect {
+        patch toggle_online_driver_path(id)
+      }.wont_change "Driver.count"
+
+      must_redirect_to :drivers
     end
   end
 end

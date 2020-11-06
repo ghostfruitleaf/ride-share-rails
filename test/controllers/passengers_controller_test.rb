@@ -195,6 +195,29 @@ describe PassengersController do
 
     end
 
+    it "deletes any trips associated with a deleted passenger" do
+      # Arrange
+      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M", available: true)
+      # driver.save
+      passenger = Passenger.create(name: "Shiba", phone_num: "000 000 0000")
+      passenger.save
+      trip = Trip.create(driver_id: driver.id, passenger_id: passenger.id, date: Date.today, rating: 5, cost: 10.00)
+      id = passenger.id
+      trip_id = trip.id
+      # Act
+      expect {
+        delete passenger_path(id)
+      }.must_change "Passenger.count", -1
+
+      deleted_passenger = Passenger.find_by(name: "Shiba")
+
+      # Assert
+      expect(deleted_passenger).must_be_nil
+      must_respond_with :redirect
+      must_redirect_to passengers_path
+      expect(Trip.find_by(id:trip_id)).must_be_nil
+    end
+
     it "does not change the db when the passenger does not exist, then responds with 404" do
       # Act
       expect {
