@@ -1,0 +1,35 @@
+<% if @trip.errors.any? %>
+  <ul class="errors">
+    <% @trip.errors.each do |column, message| %>
+      <li>
+        <strong><%= column.capitalize %></strong> <%= message %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_with model: @trip, class: 'create-trip' do |f| %>
+  <ul>
+    <li>
+      <h3><%= f.label :driver_id %> (By ID)</h3>
+      <%= f.text_field :driver_id %>
+    </li>
+    <li>
+      <h3><%= f.label :passenger_id %> (By ID)</h3>
+      <%= f.text_field :passenger_id %>
+    </li>
+    <li>
+      <h3><%= f.label :date %></h3>
+      <%= f.date_field :date %>
+    </li>
+    <li>
+      <h3><%= f.label :rating %></h3>
+      <%= f.text_field :rating %>
+    </li>
+    <li>
+      <h3><%= f.label :cost %> (In USD) </h3>
+      <%= f.text_field :cost %>
+    </li>
+  </ul>
+  <%= f.submit "Submit", class: "save-trip", data: {confirm: "Are you sure you want to edit this trip? Make sure you have read the fields carefully!"}%>
+<% end %>

@@ -10,7 +10,7 @@
     <ul>
       <li>Home</li>
       <%= link_to content_tag(:li,"Riders"), passengers_path, method: :get %>
-      <li>Drivers</li>
+      <%= link_to content_tag(:li, "Drivers"), drivers_path, method: :get %>
     </ul>
   </nav>
 </header>
@@ -24,23 +24,43 @@
       <%= link_to content_tag(:li, "Delete"), passenger_path(@passenger.id), method: :delete, data: {confirm: "Are you sure you want to delete this passenger info?"}%>
     </ul>
   </nav>
-
+  <h3>Stats</h3>
+  <ul class = "passenger-trips-stats">
+  </ul>
   <br/>
-  <h3>Request Trip</h3>
+  <%= link_to content_tag(:h3, "Request Trip"), passenger_trips_path(@passenger.id), method: :post %>
   <br/>
   <h3>Trips</h3>
   <table class = "trips">
     <tr>
       <th>Trip ID</th>
+      <th>Date</th>
       <th>Driver</th>
       <th>Passenger</th>
       <th>Cost</th>
       <th>Rating</th>
+      <th>Options</th>
     </tr>
+    <% @trips.each do |trip| %>
+    <tr>
+      <td><%=trip.id%></td>
+      <td><%=trip.date%></td>
+      <td><%=trip.driver.name%> <%= link_to content_tag(:p, "View"), driver_path(trip.driver.id), method: :get %></td>
+      <td><%=trip.passenger.name%> <%= link_to content_tag(:p, "View"), passenger_path(trip.passenger.id), method: :get %></td>
+      <td><%='$%.2f' % (trip.cost)%></td>
+      <td><%if trip.rating.nil?%>
+          Pending <%= link_to content_tag(:p, "Rate"), rate_trip_path(id: trip.id), method: :get %>
+        <% else%>
+          <%=trip.rating%>
+        <% end%></td>
+      <td><%= link_to content_tag(:p, "View"),
+                      passenger_trip_path(passenger_id: @passenger.id ,id: trip.id), method: :get %>
+          <%= link_to content_tag(:p, "Delete"),
+                      passenger_trip_path(passenger_id: @passenger.id, id: trip.id), method: :delete,
+                      data: {confirm: "Are you sure you want to delete this trip?"}%></td>
+    </tr>
+    <% end %>
   </table>
-
-  <ul class = "trip-info">
-  </ul>
 </main>
 </body>
 </html>
