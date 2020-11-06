@@ -15,12 +15,12 @@ class Trip < ApplicationRecord
   validates :cost, numericality: { greater_than_or_equal_to: 0 }
 
   def default
-    driver = Driver.find_by(name: "TEST DRIVER")
+    driver = Driver.where(available: true).first
     driver.available = false
     self[:driver_id] = driver.id
     self[:date] = Date.today.to_formatted_s(:db)
     self[:rating] = nil
-    self[:cost] = rand(0...5000.00)
+    self[:cost] = rand(1.65...5000.00)
   end
 
   def valid_date
