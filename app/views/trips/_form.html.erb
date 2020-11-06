@@ -27,9 +27,9 @@
       <%= f.text_field :rating %>
     </li>
     <li>
-      <h3><%= f.label :cost %> (In USD: cents) </h3>
+      <h3><%= f.label :cost %> (In USD) </h3>
       <%= f.text_field :cost %>
     </li>
   </ul>
-  <%= f.submit "Submit rating", class: "save-trip", data: {confirm: "Are you sure you want to edit this trip? Make sure you have read the fields carefully!"}%>
+  <%= f.submit "Submit", class: "save-trip", data: {confirm: "Are you sure you want to edit this trip? Make sure you have read the fields carefully!"}%>
 <% end %>

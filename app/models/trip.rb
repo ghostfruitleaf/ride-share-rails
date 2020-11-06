@@ -17,15 +17,15 @@ class Trip < ApplicationRecord
   def default
     driver = Driver.find_by(name: "TEST DRIVER")
     driver.available = false
-    self[:driver_id] = driver.id
-    self[:date] = Date.today.to_formatted_s(:db)
-    self[:rating] = nil
-    self[:cost] = rand(0...5000.00)
+    self.driver_id = driver.id
+    self.date = Date.today.to_formatted_s(:db)
+    self.rating = nil
+    self.cost = rand(0...50.00)
   end
 
   def valid_date
     begin
-      Date.parse(self[:date]).to_formatted_s(:db)
+      Date.parse(self.date).to_formatted_s(:db)
     rescue
       self.errors[:date] << 'must be valid date.'
     end

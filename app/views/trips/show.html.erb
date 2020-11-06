@@ -43,7 +43,7 @@
       <td><%=@trip.date%></td>
       <td><%=@trip.driver.name%> <%= link_to content_tag(:p, "View"), driver_path(@trip.driver.id), method: :get %></td>
       <td><%=@trip.passenger.name%> <%= link_to content_tag(:p, "View"), passenger_path(@trip.passenger.id), method: :get %></td>
-      <td><%= '$%.2f' % (@trip.cost/100)%></td>
+      <td><%= '$%.2f' % (@trip.cost)%></td>
       <td><%if @trip.rating.nil?%>
           Pending <%= link_to content_tag(:p, "Rate"), rate_trip_path(id: @trip.id), method: :get %>
         <% else%>
