@@ -226,6 +226,28 @@ describe DriversController do
 
     end
 
+    it "deletes any trips associated with a deleted driver" do
+      # Arrange
+      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M")
+      driver.save
+      passenger = Passenger.create(name: "Shiba", phone_num: "000 000 0000")
+      trip = Trip.create(driver_id: driver.id, passenger_id: passenger.id, date: Date.today, rating: 5, cost: 10.00)
+      id = driver.id
+      trip_id = trip.id
+      # Act
+      expect {
+        delete driver_path(id)
+      }.must_change "Driver.count", -1
+
+      deleted_driver = Driver.find_by(name: "Marta Mora")
+
+      # Assert
+      expect(deleted_driver).must_be_nil
+      must_respond_with :redirect
+      must_redirect_to drivers_path
+      expect(Trip.find_by(id:trip_id)).must_be_nil
+    end
+
     it "does not change the db when the driver does not exist, then responds with " do
       # Arrange
       # Ensure there is an invalid id that points to no driver
