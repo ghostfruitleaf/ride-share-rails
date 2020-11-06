@@ -17,7 +17,13 @@
 <main>
   <h2><b>Driver:</b> <%=@driver.name%></h2>
   <h3><b>Vin:</b> <%=@driver.vin%></h3>
-  <h3><b>Status:</b></h3>
+  <h3><b>Status:</b>
+    <%if @driver.available %>
+      Online  <%= link_to content_tag(:mark, "Go Offline"), toggle_online_driver_path(@driver.id), method: :patch %>
+    <%else %>
+      Offline  <%= link_to content_tag(:mark, "Go Online"), toggle_online_driver_path(@driver.id), method: :patch %>
+    <%end%>
+  </h3>
   <ul class = "driver-trips-stats">
     <li><b>Total earnings:</b> <%="$%.2f" % @driver.total_earnings%></li>
     <li><b>Average rating:</b> <%="$%.2f" % @driver.average_rating%></li>
