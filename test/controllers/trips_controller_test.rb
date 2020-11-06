@@ -238,7 +238,7 @@ describe TripsController do
       id = Trip.find_by(date: Date.today)[:id]
       # id = @trip.id
       # Act
-      get trips_path(id)
+      get get_rating_trip_path(id)
       # (id)
       # Assert
       must_respond_with :success
@@ -246,19 +246,56 @@ describe TripsController do
 
     it "responds with redirect when getting the rate trip for a non-existing trip" do
       # Act
-      get trips_path(-1)
+      get get_rating_trip_path(-1)
 
       # Act-Assert
 
       # Assert
-      must_respond_with :not_found
+      must_respond_with :redirect
+      must_redirect_to root_path
+
+    end
+  end
+
+  describe "get_rating" do
+    before do
+      passenger = Passenger.create(name: 'hi', phone_num: 'num')
+      driver = Driver.create(name: "asjdif", vin: "aajsdofss", available: true)
+      Trip.create!(driver: driver, passenger: passenger, date: Date.today, rating: 1, cost: 3.45)
+    end
+    let (:edit_trip_data) {
+      {
+          trip: {
+              date: Date.today,
+              rating:2,
+              cost: 3.23}
+      }
+    }
+    it "can update an existing trip with valid information accurately, and redirect" do
+      # Arrange
+      id = Trip.find_by(date: Date.today)[:id]
+      # Act-Assert
+      expect{
+        patch trip_path(id), params: edit_trip_data
+      }.wont_change "Trip.count"
+
+      must_redirect_to trip_path(id)
+
+      edited_rating = Trip.find_by(date: edit_trip_data[:trip][:date])
+      expect(Date.parse(edited_rating.date)).must_equal edit_trip_data[:trip][:date]
 
     end
 
+    it "does not update any trip if given an invalid id, and responds with a 404" do
+      id = -1
+      # Act-Assert
+      expect {
+        patch trip_path(id), params: edit_trip_data
+      }.wont_change "Trip.count"
+
+      must_respond_with :redirect
+
+    end
   end
-
-
-
-
 
 end
