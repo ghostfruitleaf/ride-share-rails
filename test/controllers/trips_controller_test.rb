@@ -226,4 +226,39 @@ describe TripsController do
       must_respond_with :not_found
     end
   end
+
+  describe "rate_trip" do
+    before do
+      passenger = Passenger.create(name: 'hi', phone_num: 'num')
+      driver = Driver.create(name: "asjdif", vin: "aajsdofss", available: true)
+      Trip.create(passenger: passenger, driver: driver, date: Date.today, rating: 2, cost: 8.45)
+    end
+    it "responds with success when getting the rate trip for an existing, valid trip" do
+      # Arrange
+      id = Trip.find_by(date: Date.today)[:id]
+      # id = @trip.id
+      # Act
+      get trips_path(id)
+      # (id)
+      # Assert
+      must_respond_with :success
+    end
+
+    it "responds with redirect when getting the rate trip for a non-existing trip" do
+      # Act
+      get trips_path(-1)
+
+      # Act-Assert
+
+      # Assert
+      must_respond_with :not_found
+
+    end
+
+  end
+
+
+
+
+
 end
