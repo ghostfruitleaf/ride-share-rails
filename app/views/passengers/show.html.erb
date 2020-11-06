@@ -25,6 +25,7 @@
   </nav>
   <h3>Stats</h3>
   <ul class = "passenger-trips-stats">
+    <li><b>Total spent on trips:</b> <%="$%.2f" % @passenger.total_spent%></li>
   </ul>
   <br/>
   <%= link_to content_tag(:h3, "Request Trip"), passenger_trips_path(@passenger.id), method: :post %>
