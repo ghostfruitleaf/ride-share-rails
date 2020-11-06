@@ -22,7 +22,11 @@ header{
     color: #DBE9EE;
 }
 
-header > nav ul li{
+header h1{
+    padding: 10px;
+}
+
+li{
     list-style-type: none;
 }
 
@@ -33,3 +37,18 @@ header a{
 header a:hover{
     color: #4F6D7A;
 }
+
+table {
+    width: 100%;
+    vertical-align: middle
+}
+
+table th{
+    background-color: #166088;
+    color: #DBE9EE;
+}
+
+tr:nth-child(even){
+    background-color: #DBE9EE;
+}
+

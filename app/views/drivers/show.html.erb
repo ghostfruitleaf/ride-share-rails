@@ -15,6 +15,7 @@
       Offline  <%= link_to content_tag(:mark, "Go Online"), toggle_online_driver_path(@driver.id), method: :patch %>
     <%end%>
   </h3>
+  <h3><b>Stats</b></h3>
   <ul class = "driver-trips-stats">
     <li><b>Total earnings:</b> <%="$%.2f" % @driver.total_earnings%></li>
     <li><b>Average rating:</b> <%="$%.2f" % @driver.average_rating%></li>
