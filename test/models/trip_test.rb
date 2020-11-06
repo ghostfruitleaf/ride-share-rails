@@ -1,19 +1,25 @@
 require "test_helper"
 
 describe Trip do
+  # before do
+  #
+  #   Trip.new(driver: driver, passenger: passenger, date: Date.today, rating: 1, cost: 3.45)
+  # end
   let (:new_trip) {
-    Trip.new(date: "mm-dd-yy", rating: 3, cost: 3.11)
+    passenger = Passenger.create(name: 'hi', phone_num: 'num')
+    driver = Driver.create(name: "asjdif", vin: "aajsdofss", available: true)
+    Trip.new(driver_id: driver.id, passenger_id: passenger.id, date: Date.today, rating: 3, cost: 200)
   }
   it "can be instantiated" do
     # Your code here
-    expect(:new_trip.valid?).must_equal true
+    expect(new_trip.valid?).must_equal true
   end
 
   it "will have the required fields" do
     # Your code here
     new_trip.save
     trip = Trip.first
-    [:date, :rating, :cost].each do |field|
+    [:driver_id, :passenger_id, :date, :rating, :cost].each do |field|
 
       # Assert
       expect(trip).must_respond_to field
@@ -46,17 +52,18 @@ describe Trip do
       # Assert
       expect(new_trip.valid?).must_equal false
       expect(new_trip.errors.messages).must_include :date
-      expect(new_trip.errors.messages[:date]).must_equal ["can't be blank"]
+      expect(new_trip.errors.messages[:date]).must_equal ["must be valid date.", "can't be blank"]
+
     end
 
     it "must have a rating number" do
       # Arrange
-      new_trip.rating = nil
+      new_trip.rating = 6
 
       # Assert
       expect(new_trip.valid?).must_equal false
       expect(new_trip.errors.messages).must_include :rating
-      expect(new_trip.errors.messages[:rating]).must_equal ["can't be blank"]
+      expect(new_trip.errors.messages[:rating]).must_equal ["must be less than or equal to 5"]
     end
   end
 
