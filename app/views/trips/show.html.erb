@@ -6,6 +6,7 @@
 <body>
 <%= render partial: "drivers/navigation"%>
 <main>
+  <h2>Trip <%=@trip.id%></h2>
   <nav>
     <ul>
       <%= link_to content_tag(:li, "Edit Info"), edit_trip_path(@trip.id), method: :get %>
@@ -18,7 +19,7 @@
       <%end %>
     </ul>
   </nav>
-  <h2>Trip <%=@trip.id%></h2>
+
   <table class = "trips">
     <tr>
       <th>Trip ID</th>
