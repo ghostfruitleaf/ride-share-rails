@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<header>
+  <h1>Welcome to Ada RideShare</h1>
+</header>
+<body>
+<header>
+  <nav>
+    <ul>
+      <%= link_to content_tag(:li,"Home"), root_path, method: :get %>
+      <%= link_to content_tag(:li,"View Riders"), passengers_path, method: :get %>
+      <%= link_to content_tag(:li, "View Drivers"), drivers_path, method: :get %>
+      <%= link_to content_tag(:li, "Add Rider"), new_passenger_path, method: :get %>
+      <%= link_to content_tag(:li, "Add Driver"), new_driver_path, method: :get %>
+    </ul>
+  </nav>
+</header>
+<%= yield %>
+</body>
+<footer>
+  <p>Copyright Ada C14 - Pauline Chane & Gessica E. Mohr 2020</p>
+</footer>
+</html>
