@@ -86,7 +86,7 @@ class TripsController < ApplicationController
     @trip = Trip.find_by(id: trip_id)
 
     if @trip.nil?
-      redirect_to root_path
+      head :not_found
       return
     end
   end

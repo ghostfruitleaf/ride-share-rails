@@ -251,8 +251,7 @@ describe TripsController do
       # Act-Assert
 
       # Assert
-      must_respond_with :redirect
-      must_redirect_to root_path
+      must_respond_with :not_found
 
     end
   end
