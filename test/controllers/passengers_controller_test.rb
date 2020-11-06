@@ -197,7 +197,7 @@ describe PassengersController do
 
     it "deletes any trips associated with a deleted passenger" do
       # Arrange
-      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M")
+      driver = Driver.create(name: "Marta Mora", vin: "SU9PYDRK6214WL15M", available: true)
       # driver.save
       passenger = Passenger.create(name: "Shiba", phone_num: "000 000 0000")
       passenger.save

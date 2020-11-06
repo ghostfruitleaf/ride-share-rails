@@ -23,7 +23,7 @@ class DriversController < ApplicationController
 
   def create
     @driver = Driver.new(driver_params)
-
+    @driver.available = true
     if @driver.save
       redirect_to driver_path(@driver.id)
     else
@@ -70,11 +70,28 @@ class DriversController < ApplicationController
     return
   end
 
+  def toggle_online
+    driver_id = params[:id]
+    @driver = Driver.find_by(id: driver_id)
+    if @driver.nil?
+      redirect_to drivers_path
+      return
+    end
+
+    @driver.available = !@driver.available
+
+    if @driver.save
+      redirect_to driver_path
+      return
+    else
+      head :not_found
+      return
+    end
+  end
+
   private
 
   def driver_params
     return params.require(:driver).permit(:id, :name, :vin, :available)
   end
-
-
 end

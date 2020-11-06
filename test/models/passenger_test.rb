@@ -24,7 +24,7 @@ describe Passenger do
     it "can have many trips" do
       # Arrange
       new_passenger.save
-      new_driver = Driver.create(name: "Waldo", vin: "ALWSS52P9NEYLVDE9")
+      new_driver = Driver.create(name: "Waldo", vin: "ALWSS52P9NEYLVDE9", available: true)
       trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 1234)
       trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 3, cost: 6334)
 
@@ -65,7 +65,7 @@ describe Passenger do
     end
     it "returns the sum of all costs of a passenger's trip" do
       new_passenger.save
-      new_driver = Driver.create(name: "Waldo", vin: "ALWSS52P9NEYLVDE9")
+      new_driver = Driver.create(name: "Waldo", vin: "ALWSS52P9NEYLVDE9", available: true)
       trip_1 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 5, cost: 10.00)
       trip_2 = Trip.create(driver_id: new_driver.id, passenger_id: new_passenger.id, date: Date.today, rating: 3, cost: 20.00)
 

@@ -11,4 +11,5 @@ Rails.application.routes.draw do
 
   get '/trips/:id/rate_trip', to: 'trips#rate_trip', as: "rate_trip"
   patch 'trips/:id', to: 'trips#get_rating_trip', as: "get_rating_trip"
+  patch 'drivers/:id/toggle_online', to: 'drivers#toggle_online', as: "toggle_online_driver"
 end

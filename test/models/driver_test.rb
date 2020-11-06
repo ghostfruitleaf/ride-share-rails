@@ -56,6 +56,16 @@ describe Driver do
       expect(new_driver.errors.messages).must_include :vin
       expect(new_driver.errors.messages[:vin]).must_equal ["can't be blank"]
     end
+
+    it "must have a boolean for available" do
+      # Arrange
+      new_driver.available = nil
+
+      # Assert
+      expect(new_driver.valid?).must_equal false
+      expect(new_driver.errors.messages).must_include :available
+      expect(new_driver.errors.messages[:available]).must_equal ["must be true or false"]
+    end
   end
 
   # Tests for methods you create should go here

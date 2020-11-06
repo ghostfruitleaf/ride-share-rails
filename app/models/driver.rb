@@ -3,7 +3,7 @@ class Driver < ApplicationRecord
   #validation
   validates :name, presence: true
   validates :vin, presence: true
-
+  validates :available, :inclusion => { in: [true, false], message: "must be true or false" }
   def average_rating
     trips = self.trips
     trips = trips.all
